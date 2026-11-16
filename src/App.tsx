@@ -25,7 +25,6 @@ export default function App() {
         <ConnectButton />
       </header>
 
-      {/* Hero с логотипом */}
       <div style={{ 
         minHeight: '100vh',
         display: 'flex',
@@ -54,7 +53,6 @@ export default function App() {
         </p>
       </div>
 
-      {/* Контент ниже */}
       <main style={{ maxWidth: 900, margin: '0 auto', padding: '60px 24px 100px' }}>
         {isConnected ? (
           <>
