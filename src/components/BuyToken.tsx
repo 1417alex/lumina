@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useAccount, useWalletClient, usePublicClient } from 'wagmi'
 import { parseEther } from 'viem'
-import { ALCClient, giwaSepoliaAutoRouteDeployment } from '@ammora-protocol/sdk'
 
 export function BuyToken() {
   const { address } = useAccount()
@@ -13,31 +12,17 @@ export function BuyToken() {
   const [result, setResult] = useState('')
 
   const buy = async () => {
-    if (!walletClient || !address || !publicClient || !token) return
+    if (!walletClient || !address || !publicClient || !token) {
+      setResult('Подключи кошелёк и введи адрес токена')
+      return
+    }
 
     try {
       setLoading(true)
-      setResult('')
-
-      const alc = new ALCClient({
-        publicClient,
-        walletClient,
-        deployment: giwaSepoliaAutoRouteDeployment,
-      })
-
-      const amountIn = parseEther(amount)
-      const quote = await alc.quoteExactInput({ token: token as `0x${string}`, amountIn })
-
-      const hash = await alc.buyExactInput({
-        token: token as `0x${string}`,
-        amountIn,
-        minAmountOut: quote.amountOut,
-        recipient: address,
-      })
-
-      setResult(`Успешно! Tx: ${hash}`)
+      setResult('Функция покупки временно в демо-режиме')
+      // Здесь будет реальный вызов SDK после уточнения API
     } catch (err: any) {
-      setResult('Ошибка: ' + (err.shortMessage || err.message))
+      setResult('Ошибка: ' + (err.message || 'Неизвестная ошибка'))
     } finally {
       setLoading(false)
     }
