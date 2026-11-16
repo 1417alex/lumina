@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAccount, useWalletClient, usePublicClient } from 'wagmi'
 import { parseEther } from 'viem'
+import { ALCClient, giwaSepoliaAutoRouteDeployment } from '@ammora-protocol/sdk'
 
 export function BuyToken() {
   const { address } = useAccount()
@@ -13,16 +14,38 @@ export function BuyToken() {
 
   const buy = async () => {
     if (!walletClient || !address || !publicClient || !token) {
-      setResult('Подключи кошелёк и введи адрес токена')
+      setResult('Please connect wallet and enter a token address')
       return
     }
 
     try {
       setLoading(true)
-      setResult('Функция покупки временно в демо-режиме')
-      // Здесь будет реальный вызов SDK после уточнения API
+      setResult('')
+
+      const alc = new ALCClient({
+        publicClient,
+        walletClient,
+        deployment: giwaSepoliaAutoRouteDeployment,
+      })
+
+      const amountIn = parseEther(amount)
+
+      const quote = await alc.quoteExactInput({
+        token: token as `0x${string}`,
+        amountIn,
+      })
+
+      const hash = await alc.buyExactInput({
+        token: token as `0x${string}`,
+        amountIn,
+        minAmountOut: quote.amountOut,
+        recipient: address,
+      })
+
+      setResult(`Success! Transaction: ${hash}`)
     } catch (err: any) {
-      setResult('Ошибка: ' + (err.message || 'Неизвестная ошибка'))
+      console.error(err)
+      setResult('Error: ' + (err.shortMessage || err.message || 'Transaction failed'))
     } finally {
       setLoading(false)
     }
@@ -30,21 +53,21 @@ export function BuyToken() {
 
   return (
     <div style={{ background: '#16161d', padding: 20, borderRadius: 16 }}>
-      <h3>Купить токен</h3>
+      <h3>Buy Token</h3>
       <input
-        placeholder="Адрес токена"
+        placeholder="Token address (0x...)"
         value={token}
         onChange={(e) => setToken(e.target.value)}
         style={inputStyle}
       />
       <input
-        placeholder="Сумма в ETH"
+        placeholder="Amount in ETH"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
         style={inputStyle}
       />
       <button onClick={buy} disabled={loading} style={buttonStyle}>
-        {loading ? 'Отправка...' : 'Купить'}
+        {loading ? 'Sending...' : 'Buy'}
       </button>
       {result && <p style={{ marginTop: 12, fontSize: 14 }}>{result}</p>}
     </div>
