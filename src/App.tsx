@@ -20,7 +20,19 @@ export default function App() {
         zIndex: 10
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <img src="/logo.png" alt="Lumina" style={{ height: 40, width: 'auto' }} />
+          <div style={{ 
+            width: 36, 
+            height: 36, 
+            background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)', 
+            borderRadius: 8,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 'bold',
+            fontSize: 18
+          }}>
+            L
+          </div>
           <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700 }}>Lumina</h1>
         </div>
         <ConnectButton />
