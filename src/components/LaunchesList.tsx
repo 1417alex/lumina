@@ -7,15 +7,14 @@ export function LaunchesList() {
   useEffect(() => {
     setTimeout(() => {
       setLaunches([
-        { token: '0x123...abc', name: 'Test Token', symbol: 'TEST' },
-        { token: '0x456...def', name: 'Demo Token', symbol: 'DEMO' },
+        { token: '0x1234...abcd', name: 'Test Token', symbol: 'TEST' },
+        { token: '0x5678...efgh', name: 'Demo Token', symbol: 'DEMO' },
       ])
       setLoading(false)
-    }, 500)
+    }, 300)
   }, [])
 
   if (loading) return <p>Loading launches...</p>
-  if (!launches.length) return <p>No active launches found</p>
 
   return (
     <div style={{ marginBottom: 40 }}>
