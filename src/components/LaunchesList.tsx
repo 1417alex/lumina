@@ -5,7 +5,6 @@ export function LaunchesList() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Временно демо-данные, пока уточняем API
     setTimeout(() => {
       setLaunches([
         { token: '0x123...abc', name: 'Test Token', symbol: 'TEST' },
@@ -15,12 +14,12 @@ export function LaunchesList() {
     }, 500)
   }, [])
 
-  if (loading) return <p>Загрузка запусков...</p>
-  if (!launches.length) return <p>Активных запусков не найдено</p>
+  if (loading) return <p>Loading launches...</p>
+  if (!launches.length) return <p>No active launches found</p>
 
   return (
     <div style={{ marginBottom: 40 }}>
-      <h2>Активные запуски</h2>
+      <h2>Active Launches</h2>
       <div style={{ display: 'grid', gap: 12, marginTop: 16 }}>
         {launches.map((launch) => (
           <div key={launch.token} style={{ background: '#16161d', padding: 16, borderRadius: 12 }}>
