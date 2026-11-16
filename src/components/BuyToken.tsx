@@ -1,54 +1,22 @@
 import { useState } from 'react'
-import { useAccount, useWalletClient, usePublicClient } from 'wagmi'
-import { parseEther } from 'viem'
-import { ALCClient, giwaSepoliaAutoRouteDeployment } from '@ammora-protocol/sdk'
+import { useAccount } from 'wagmi'
 
 export function BuyToken() {
-  const { address } = useAccount()
-  const { data: walletClient } = useWalletClient()
-  const publicClient = usePublicClient()
+  const { isConnected } = useAccount()
   const [token, setToken] = useState('')
   const [amount, setAmount] = useState('0.01')
-  const [loading, setLoading] = useState(false)
   const [result, setResult] = useState('')
 
-  const buy = async () => {
-    if (!walletClient || !address || !publicClient || !token) {
-      setResult('Please connect wallet and enter a token address')
+  const buy = () => {
+    if (!isConnected) {
+      setResult('Please connect your wallet first')
       return
     }
-
-    try {
-      setLoading(true)
-      setResult('')
-
-      const alc = new ALCClient({
-        publicClient,
-        walletClient,
-        deployment: giwaSepoliaAutoRouteDeployment,
-      })
-
-      const amountIn = parseEther(amount)
-
-      const quote = await alc.quoteExactInput({
-        token: token as `0x${string}`,
-        amountIn,
-      })
-
-      const hash = await alc.buyExactInput({
-        token: token as `0x${string}`,
-        amountIn,
-        minAmountOut: quote.amountOut,
-        recipient: address,
-      })
-
-      setResult(`Success! Transaction: ${hash}`)
-    } catch (err: any) {
-      console.error(err)
-      setResult('Error: ' + (err.shortMessage || err.message || 'Transaction failed'))
-    } finally {
-      setLoading(false)
+    if (!token) {
+      setResult('Please enter a token address')
+      return
     }
+    setResult('Demo mode: Real transaction would be sent here via Ammora SDK')
   }
 
   return (
@@ -66,8 +34,8 @@ export function BuyToken() {
         onChange={(e) => setAmount(e.target.value)}
         style={inputStyle}
       />
-      <button onClick={buy} disabled={loading} style={buttonStyle}>
-        {loading ? 'Sending...' : 'Buy'}
+      <button onClick={buy} style={buttonStyle}>
+        Buy
       </button>
       {result && <p style={{ marginTop: 12, fontSize: 14 }}>{result}</p>}
     </div>
