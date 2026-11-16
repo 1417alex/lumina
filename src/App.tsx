@@ -13,50 +13,53 @@ export default function App() {
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
-        borderBottom: '1px solid #222',
-        position: 'sticky',
+        position: 'absolute',
         top: 0,
-        background: '#0a0a0f',
+        left: 0,
+        right: 0,
         zIndex: 10
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ 
-            width: 36, 
-            height: 36, 
-            background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)', 
-            borderRadius: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bold',
-            fontSize: 18
-          }}>
-            L
-          </div>
-          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700 }}>Lumina</h1>
-        </div>
+        <div style={{ fontSize: 20, fontWeight: 700 }}>Lumina</div>
         <ConnectButton />
       </header>
 
+      {/* Большой логотип на весь экран */}
       <div style={{ 
-        textAlign: 'center', 
-        padding: '80px 20px 40px',
-        background: 'linear-gradient(180deg, #1a1033 0%, #0a0a0f 100%)'
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'radial-gradient(circle at center, #1a1033 0%, #0a0a0f 70%)',
+        textAlign: 'center',
+        padding: 20
       }}>
-        <h2 style={{ fontSize: 42, margin: 0, fontWeight: 700 }}>Discover the next market</h2>
-        <p style={{ fontSize: 18, color: '#aaa', marginTop: 12 }}>
+        <img 
+          src="/logo.png" 
+          alt="Lumina" 
+          style={{ 
+            width: 'min(500px, 80vw)', 
+            height: 'auto',
+            marginBottom: 30,
+            filter: 'drop-shadow(0 0 40px rgba(139, 92, 246, 0.4))'
+          }} 
+        />
+        <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', margin: 0, fontWeight: 700 }}>
+          Discover the next market
+        </h1>
+        <p style={{ fontSize: 18, color: '#aaa', marginTop: 16, maxWidth: 500 }}>
           Launch and trade with Ammora’s programmable liquidity on GIWA
         </p>
       </div>
 
-      <main style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px 80px' }}>
+      <main style={{ maxWidth: 900, margin: '0 auto', padding: '80px 24px' }}>
         {isConnected ? (
           <>
             <LaunchesList />
             <BuyToken />
           </>
         ) : (
-          <p style={{ textAlign: 'center', marginTop: 40, color: '#888' }}>
+          <p style={{ textAlign: 'center', color: '#888' }}>
             Connect your wallet to explore launches and buy tokens
           </p>
         )}
